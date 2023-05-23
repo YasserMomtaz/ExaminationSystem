@@ -1,0 +1,666 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Examination_SystemModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Course">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Exams" Relationship="Self.FK_Exam_Course" FromRole="Course" ToRole="Exam" />
+    <NavigationProperty Name="Student_Course" Relationship="Self.FK_Student_Course_Course" FromRole="Course" ToRole="Student_Course" />
+    <NavigationProperty Name="Topics" Relationship="Self.FK_Topic_Course" FromRole="Course" ToRole="Topic" />
+    <NavigationProperty Name="Instructors" Relationship="Self.Instructor_course" FromRole="Course" ToRole="Instructor" />
+  </EntityType>
+  <EntityType Name="Department">
+    <Key>
+      <PropertyRef Name="Dept_id" />
+    </Key>
+    <Property Name="Dept_id" Type="Int32" Nullable="false" />
+    <Property Name="Dept_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Instructors" Relationship="Self.FK_Instructor_Department" FromRole="Department" ToRole="Instructor" />
+    <NavigationProperty Name="Students" Relationship="Self.FK_Student_Department" FromRole="Department" ToRole="Student" />
+  </EntityType>
+  <EntityType Name="Exam">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="duration" Type="Int32" Nullable="false" />
+    <Property Name="Crs_id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Course" Relationship="Self.FK_Exam_Course" FromRole="Exam" ToRole="Course" />
+    <NavigationProperty Name="Exam_student_question" Relationship="Self.FK_Exam_student_question_Exam" FromRole="Exam" ToRole="Exam_student_question" />
+  </EntityType>
+  <EntityType Name="Exam_student_question">
+    <Key>
+      <PropertyRef Name="ex_id" />
+      <PropertyRef Name="Std_ssn" />
+      <PropertyRef Name="quest_id" />
+    </Key>
+    <Property Name="ex_id" Type="Int32" Nullable="false" />
+    <Property Name="Std_ssn" Type="Int32" Nullable="false" />
+    <Property Name="quest_id" Type="Int32" Nullable="false" />
+    <Property Name="date" Type="DateTime" Precision="3" />
+    <Property Name="Student_answer" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Exam" Relationship="Self.FK_Exam_student_question_Exam" FromRole="Exam_student_question" ToRole="Exam" />
+    <NavigationProperty Name="Question" Relationship="Self.FK_Exam_student_question_Question" FromRole="Exam_student_question" ToRole="Question" />
+    <NavigationProperty Name="Student" Relationship="Self.FK_Exam_student_question_Student" FromRole="Exam_student_question" ToRole="Student" />
+  </EntityType>
+  <EntityType Name="Instructor">
+    <Key>
+      <PropertyRef Name="Ins_ssn" />
+    </Key>
+    <Property Name="Ins_ssn" Type="Int32" Nullable="false" />
+    <Property Name="Ins_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="salary" Type="Int32" />
+    <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Bday" Type="DateTime" Precision="0" />
+    <Property Name="Dept_id" Type="Int32" />
+    <NavigationProperty Name="Department" Relationship="Self.FK_Instructor_Department" FromRole="Instructor" ToRole="Department" />
+    <NavigationProperty Name="Courses" Relationship="Self.Instructor_course" FromRole="Instructor" ToRole="Course" />
+  </EntityType>
+  <EntityType Name="Question">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="model_ans" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="title" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="grade" Type="Int32" />
+    <Property Name="type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="crs_id" Type="Int32" />
+    <NavigationProperty Name="Exam_student_question" Relationship="Self.FK_Exam_student_question_Question" FromRole="Question" ToRole="Exam_student_question" />
+    <NavigationProperty Name="Question_Choices" Relationship="Self.FK_Question_Choices_Question" FromRole="Question" ToRole="Question_Choices" />
+  </EntityType>
+  <EntityType Name="Question_Choices">
+    <Key>
+      <PropertyRef Name="ques_id" />
+      <PropertyRef Name="choice" />
+    </Key>
+    <Property Name="ques_id" Type="Int32" Nullable="false" />
+    <Property Name="choice" Type="String" MaxLength="180" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Question" Relationship="Self.FK_Question_Choices_Question" FromRole="Question_Choices" ToRole="Question" />
+  </EntityType>
+  <EntityType Name="Student">
+    <Key>
+      <PropertyRef Name="Student_ssn" />
+    </Key>
+    <Property Name="Student_ssn" Type="Int32" Nullable="false" />
+    <Property Name="fname" Type="String" MaxLength="90" FixedLength="false" Unicode="false" />
+    <Property Name="lname" Type="String" MaxLength="90" FixedLength="false" Unicode="false" />
+    <Property Name="Bday" Type="DateTime" Precision="0" />
+    <Property Name="address" Type="String" MaxLength="90" FixedLength="false" Unicode="false" />
+    <Property Name="email" Type="String" MaxLength="90" FixedLength="false" Unicode="false" />
+    <Property Name="Dept_id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Department" Relationship="Self.FK_Student_Department" FromRole="Student" ToRole="Department" />
+    <NavigationProperty Name="Exam_student_question" Relationship="Self.FK_Exam_student_question_Student" FromRole="Student" ToRole="Exam_student_question" />
+    <NavigationProperty Name="Student_Course" Relationship="Self.FK_Student_Course_Student" FromRole="Student" ToRole="Student_Course" />
+  </EntityType>
+  <EntityType Name="Student_Course">
+    <Key>
+      <PropertyRef Name="Crs_id" />
+      <PropertyRef Name="Std_ssn" />
+    </Key>
+    <Property Name="Crs_id" Type="Int32" Nullable="false" />
+    <Property Name="Std_ssn" Type="Int32" Nullable="false" />
+    <Property Name="grade" Type="Int32" />
+    <NavigationProperty Name="Course" Relationship="Self.FK_Student_Course_Course" FromRole="Student_Course" ToRole="Course" />
+    <NavigationProperty Name="Student" Relationship="Self.FK_Student_Course_Student" FromRole="Student_Course" ToRole="Student" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="Topic">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Crs_id" Type="Int32" />
+    <NavigationProperty Name="Course" Relationship="Self.FK_Topic_Course" FromRole="Topic" ToRole="Course" />
+  </EntityType>
+  <Association Name="FK_Exam_Course">
+    <End Role="Course" Type="Self.Course" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Exam" Type="Self.Exam" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Course">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Exam">
+        <PropertyRef Name="Crs_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Student_Course_Course">
+    <End Role="Course" Type="Self.Course" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Student_Course" Type="Self.Student_Course" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Course">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Student_Course">
+        <PropertyRef Name="Crs_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Topic_Course">
+    <End Role="Course" Type="Self.Course" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Topic" Type="Self.Topic" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Course">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Topic">
+        <PropertyRef Name="Crs_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Instructor_Department">
+    <End Role="Department" Type="Self.Department" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Instructor" Type="Self.Instructor" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Department">
+        <PropertyRef Name="Dept_id" />
+      </Principal>
+      <Dependent Role="Instructor">
+        <PropertyRef Name="Dept_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Student_Department">
+    <End Role="Department" Type="Self.Department" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Student" Type="Self.Student" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Department">
+        <PropertyRef Name="Dept_id" />
+      </Principal>
+      <Dependent Role="Student">
+        <PropertyRef Name="Dept_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Exam_student_question_Exam">
+    <End Role="Exam" Type="Self.Exam" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Exam_student_question" Type="Self.Exam_student_question" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Exam">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Exam_student_question">
+        <PropertyRef Name="ex_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Exam_student_question_Question">
+    <End Role="Question" Type="Self.Question" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Exam_student_question" Type="Self.Exam_student_question" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Question">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Exam_student_question">
+        <PropertyRef Name="quest_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Exam_student_question_Student">
+    <End Role="Student" Type="Self.Student" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Exam_student_question" Type="Self.Exam_student_question" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Student">
+        <PropertyRef Name="Student_ssn" />
+      </Principal>
+      <Dependent Role="Exam_student_question">
+        <PropertyRef Name="Std_ssn" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Question_Choices_Question">
+    <End Role="Question" Type="Self.Question" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Question_Choices" Type="Self.Question_Choices" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Question">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Question_Choices">
+        <PropertyRef Name="ques_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Student_Course_Student">
+    <End Role="Student" Type="Self.Student" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Student_Course" Type="Self.Student_Course" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Student">
+        <PropertyRef Name="Student_ssn" />
+      </Principal>
+      <Dependent Role="Student_Course">
+        <PropertyRef Name="Std_ssn" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Instructor_course">
+    <End Role="Course" Type="Self.Course" Multiplicity="*" />
+    <End Role="Instructor" Type="Self.Instructor" Multiplicity="*" />
+  </Association>
+  <EntityContainer Name="Examination_SystemEntities1" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Courses" EntityType="Self.Course" />
+    <EntitySet Name="Departments" EntityType="Self.Department" />
+    <EntitySet Name="Exams" EntityType="Self.Exam" />
+    <EntitySet Name="Exam_student_question" EntityType="Self.Exam_student_question" />
+    <EntitySet Name="Instructors" EntityType="Self.Instructor" />
+    <EntitySet Name="Questions" EntityType="Self.Question" />
+    <EntitySet Name="Question_Choices" EntityType="Self.Question_Choices" />
+    <EntitySet Name="Students" EntityType="Self.Student" />
+    <EntitySet Name="Student_Course" EntityType="Self.Student_Course" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <EntitySet Name="Topics" EntityType="Self.Topic" />
+    <AssociationSet Name="FK_Exam_Course" Association="Self.FK_Exam_Course">
+      <End Role="Course" EntitySet="Courses" />
+      <End Role="Exam" EntitySet="Exams" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Student_Course_Course" Association="Self.FK_Student_Course_Course">
+      <End Role="Course" EntitySet="Courses" />
+      <End Role="Student_Course" EntitySet="Student_Course" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Topic_Course" Association="Self.FK_Topic_Course">
+      <End Role="Course" EntitySet="Courses" />
+      <End Role="Topic" EntitySet="Topics" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Instructor_Department" Association="Self.FK_Instructor_Department">
+      <End Role="Department" EntitySet="Departments" />
+      <End Role="Instructor" EntitySet="Instructors" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Student_Department" Association="Self.FK_Student_Department">
+      <End Role="Department" EntitySet="Departments" />
+      <End Role="Student" EntitySet="Students" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Exam_student_question_Exam" Association="Self.FK_Exam_student_question_Exam">
+      <End Role="Exam" EntitySet="Exams" />
+      <End Role="Exam_student_question" EntitySet="Exam_student_question" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Exam_student_question_Question" Association="Self.FK_Exam_student_question_Question">
+      <End Role="Question" EntitySet="Questions" />
+      <End Role="Exam_student_question" EntitySet="Exam_student_question" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Exam_student_question_Student" Association="Self.FK_Exam_student_question_Student">
+      <End Role="Student" EntitySet="Students" />
+      <End Role="Exam_student_question" EntitySet="Exam_student_question" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Question_Choices_Question" Association="Self.FK_Question_Choices_Question">
+      <End Role="Question" EntitySet="Questions" />
+      <End Role="Question_Choices" EntitySet="Question_Choices" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Student_Course_Student" Association="Self.FK_Student_Course_Student">
+      <End Role="Student" EntitySet="Students" />
+      <End Role="Student_Course" EntitySet="Student_Course" />
+    </AssociationSet>
+    <AssociationSet Name="Instructor_course" Association="Self.Instructor_course">
+      <End Role="Course" EntitySet="Courses" />
+      <End Role="Instructor" EntitySet="Instructors" />
+    </AssociationSet>
+    <FunctionImport Name="course_delete" ReturnType="Collection(String)">
+      <Parameter Name="id" Mode="In" Type="Int32" />
+      <Parameter Name="name" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="course_insert" ReturnType="Collection(String)">
+      <Parameter Name="id" Mode="In" Type="Int32" />
+      <Parameter Name="name" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="course_select" ReturnType="Collection(Examination_SystemModel.course_select_Result)">
+      <Parameter Name="id" Mode="In" Type="Int32" />
+      <Parameter Name="name" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="course_update" ReturnType="Collection(String)">
+      <Parameter Name="id" Mode="In" Type="Int32" />
+      <Parameter Name="newid" Mode="In" Type="Int32" />
+      <Parameter Name="name" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="delete_dept">
+      <Parameter Name="Dept_name" Mode="In" Type="String" />
+      <Parameter Name="id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="delete_exam">
+      <Parameter Name="id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="delete_exstdques" ReturnType="Collection(String)">
+      <Parameter Name="ex_id" Mode="In" Type="Int32" />
+      <Parameter Name="std_ssn" Mode="In" Type="Int32" />
+      <Parameter Name="quest_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="delete_instr">
+      <Parameter Name="name" Mode="In" Type="String" />
+      <Parameter Name="ssn" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="delete_Instructor_Course" ReturnType="Collection(String)">
+      <Parameter Name="ins_id" Mode="In" Type="Int32" />
+      <Parameter Name="crs_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="delete_Student_Course" ReturnType="Collection(String)">
+      <Parameter Name="crs_Id" Mode="In" Type="Int32" />
+      <Parameter Name="std_Ssn" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="delete_topic">
+      <Parameter Name="id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="deleteAllChoices" ReturnType="Collection(String)">
+      <Parameter Name="qustion_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="deleteChoice" ReturnType="Collection(String)">
+      <Parameter Name="qustion_id" Mode="In" Type="Int32" />
+      <Parameter Name="Choice" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="deleteQuestion" ReturnType="Collection(String)">
+      <Parameter Name="qustion_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="Enter_Answers" ReturnType="Collection(String)">
+      <Parameter Name="exam_id" Mode="In" Type="Int32" />
+      <Parameter Name="std_ssn" Mode="In" Type="Int32" />
+      <Parameter Name="a1" Mode="In" Type="String" />
+      <Parameter Name="a2" Mode="In" Type="String" />
+      <Parameter Name="a3" Mode="In" Type="String" />
+      <Parameter Name="a4" Mode="In" Type="String" />
+      <Parameter Name="a5" Mode="In" Type="String" />
+      <Parameter Name="a6" Mode="In" Type="String" />
+      <Parameter Name="a7" Mode="In" Type="String" />
+      <Parameter Name="a8" Mode="In" Type="String" />
+      <Parameter Name="a9" Mode="In" Type="String" />
+      <Parameter Name="a10" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="Exam_Correction" ReturnType="Collection(String)">
+      <Parameter Name="exam_id" Mode="In" Type="Int32" />
+      <Parameter Name="st_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="Exam_Generation" ReturnType="Collection(String)">
+      <Parameter Name="std_ssn" Mode="In" Type="Int32" />
+      <Parameter Name="crs_name" Mode="In" Type="String" />
+      <Parameter Name="t_f" Mode="In" Type="Int32" />
+      <Parameter Name="choice" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="ins_topic" ReturnType="Collection(String)">
+      <Parameter Name="name" Mode="In" Type="String" />
+      <Parameter Name="crs_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="insert_dept">
+      <Parameter Name="id" Mode="In" Type="Int32" />
+      <Parameter Name="Dept_name" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="insert_exam" ReturnType="Collection(String)">
+      <Parameter Name="duration" Mode="In" Type="Int32" />
+      <Parameter Name="crs_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="insert_exstdques" ReturnType="Collection(String)">
+      <Parameter Name="ex_id" Mode="In" Type="Int32" />
+      <Parameter Name="std_ssn" Mode="In" Type="Int32" />
+      <Parameter Name="quest_id" Mode="In" Type="Int32" />
+      <Parameter Name="std_answer" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="insert_instr">
+      <Parameter Name="id" Mode="In" Type="Int32" />
+      <Parameter Name="name" Mode="In" Type="String" />
+      <Parameter Name="salary" Mode="In" Type="Int32" />
+      <Parameter Name="email" Mode="In" Type="String" />
+      <Parameter Name="bday" Mode="In" Type="DateTime" />
+      <Parameter Name="dept_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="insert_Instructor_Course" ReturnType="Collection(String)">
+      <Parameter Name="ins_id" Mode="In" Type="Int32" />
+      <Parameter Name="crs_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="insert_Student_Course" ReturnType="Collection(String)">
+      <Parameter Name="crs_Id" Mode="In" Type="Int32" />
+      <Parameter Name="std_Ssn" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="insertChoice" ReturnType="Collection(String)">
+      <Parameter Name="Q_id" Mode="In" Type="Int32" />
+      <Parameter Name="choice" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="insertQuestion" ReturnType="Collection(String)">
+      <Parameter Name="title" Mode="In" Type="String" />
+      <Parameter Name="type" Mode="In" Type="String" />
+      <Parameter Name="model_Ans" Mode="In" Type="String" />
+      <Parameter Name="crs_ID" Mode="In" Type="Int32" />
+      <Parameter Name="grade" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="select_exam" ReturnType="Collection(Examination_SystemModel.select_exam_Result)">
+      <Parameter Name="id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="select_exstdques" ReturnType="Collection(Examination_SystemModel.select_exstdques_Result)">
+      <Parameter Name="ex_id" Mode="In" Type="Int32" />
+      <Parameter Name="std_id" Mode="In" Type="Int32" />
+      <Parameter Name="quest_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="select_Instructor_Course" ReturnType="Collection(Examination_SystemModel.select_Instructor_Course_Result)">
+      <Parameter Name="ins_id" Mode="In" Type="Int32" />
+      <Parameter Name="crs_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="select_Student_Course" ReturnType="Collection(Examination_SystemModel.select_Student_Course_Result)">
+      <Parameter Name="crs_id" Mode="In" Type="Int32" />
+      <Parameter Name="std_ssn" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="select_topic" ReturnType="Collection(Examination_SystemModel.select_topic_Result)">
+      <Parameter Name="id" Mode="In" Type="Int32" />
+      <Parameter Name="name" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="selectChoice" ReturnType="Collection(Examination_SystemModel.selectChoice_Result)">
+      <Parameter Name="id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="selectQuestion" ReturnType="Collection(Examination_SystemModel.selectQuestion_Result)">
+      <Parameter Name="id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_alterdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_creatediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_dropdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(Examination_SystemModel.sp_helpdiagramdefinition_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(Examination_SystemModel.sp_helpdiagrams_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_renamediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="new_diagramname" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_upgraddiagrams" />
+    <FunctionImport Name="student_delete" ReturnType="Collection(String)">
+      <Parameter Name="ssn" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="student_Insert" ReturnType="Collection(String)">
+      <Parameter Name="ssn" Mode="In" Type="Int32" />
+      <Parameter Name="fname" Mode="In" Type="String" />
+      <Parameter Name="lname" Mode="In" Type="String" />
+      <Parameter Name="Bday" Mode="In" Type="DateTime" />
+      <Parameter Name="address" Mode="In" Type="String" />
+      <Parameter Name="email" Mode="In" Type="String" />
+      <Parameter Name="deptid" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="student_select" ReturnType="Collection(Examination_SystemModel.student_select_Result)">
+      <Parameter Name="ssn" Mode="In" Type="Int32" />
+      <Parameter Name="fname" Mode="In" Type="String" />
+      <Parameter Name="deptid" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="student_Update" ReturnType="Collection(String)">
+      <Parameter Name="ssn" Mode="In" Type="Int32" />
+      <Parameter Name="newssn" Mode="In" Type="Int32" />
+      <Parameter Name="fname" Mode="In" Type="String" />
+      <Parameter Name="lname" Mode="In" Type="String" />
+      <Parameter Name="Bday" Mode="In" Type="DateTime" />
+      <Parameter Name="address" Mode="In" Type="String" />
+      <Parameter Name="email" Mode="In" Type="String" />
+      <Parameter Name="deptid" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="update_dept">
+      <Parameter Name="id" Mode="In" Type="Int32" />
+      <Parameter Name="Dept_name" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="update_exam" ReturnType="Collection(String)">
+      <Parameter Name="id" Mode="In" Type="Int32" />
+      <Parameter Name="time" Mode="In" Type="Int32" />
+      <Parameter Name="crsid" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="update_exstdques" ReturnType="Collection(String)">
+      <Parameter Name="ex_id" Mode="In" Type="Int32" />
+      <Parameter Name="std_ssn" Mode="In" Type="Int32" />
+      <Parameter Name="quest_id" Mode="In" Type="Int32" />
+      <Parameter Name="date" Mode="In" Type="DateTime" />
+      <Parameter Name="std_answer" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="update_instr">
+      <Parameter Name="ssn" Mode="In" Type="Int32" />
+      <Parameter Name="name" Mode="In" Type="String" />
+      <Parameter Name="dept_id" Mode="In" Type="Int32" />
+      <Parameter Name="update_type" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="update_Instructor_Course" ReturnType="Collection(String)">
+      <Parameter Name="crs_id" Mode="In" Type="Int32" />
+      <Parameter Name="ins_id" Mode="In" Type="Int32" />
+      <Parameter Name="ins_newId" Mode="In" Type="Int32" />
+      <Parameter Name="crs_newId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="update_Student_Course" ReturnType="Collection(String)">
+      <Parameter Name="crs_id" Mode="In" Type="Int32" />
+      <Parameter Name="std_ssn" Mode="In" Type="Int32" />
+      <Parameter Name="crs_newId" Mode="In" Type="Int32" />
+      <Parameter Name="std_newId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="update_topic" ReturnType="Collection(String)">
+      <Parameter Name="id" Mode="In" Type="Int32" />
+      <Parameter Name="name" Mode="In" Type="String" />
+      <Parameter Name="crs_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="UpdateChoice" ReturnType="Collection(String)">
+      <Parameter Name="Q_id" Mode="In" Type="Int32" />
+      <Parameter Name="choice" Mode="In" Type="String" />
+      <Parameter Name="newChoice" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="updateQuestion" ReturnType="Collection(String)">
+      <Parameter Name="qustion_id" Mode="In" Type="Int32" />
+      <Parameter Name="model_answer" Mode="In" Type="String" />
+      <Parameter Name="title" Mode="In" Type="String" />
+      <Parameter Name="grade" Mode="In" Type="Int32" />
+      <Parameter Name="type" Mode="In" Type="String" />
+      <Parameter Name="course_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="view_depert" ReturnType="Collection(Examination_SystemModel.view_depert_Result)" />
+    <FunctionImport Name="view_instructor">
+      <Parameter Name="col" Mode="In" Type="String" />
+      <Parameter Name="cond" Mode="In" Type="String" />
+    </FunctionImport>
+  </EntityContainer>
+  <ComplexType Name="course_select_Result">
+    <Property Type="Int32" Name="Id" Nullable="false" />
+    <Property Type="String" Name="name" Nullable="true" MaxLength="50" />
+  </ComplexType>
+  <ComplexType Name="select_exam_Result">
+    <Property Type="Int32" Name="exam_id" Nullable="false" />
+    <Property Type="Int32" Name="exam_time" Nullable="false" />
+    <Property Type="String" Name="course_name" Nullable="true" MaxLength="50" />
+  </ComplexType>
+  <ComplexType Name="select_exstdques_Result">
+    <Property Type="Int32" Name="exam_id" Nullable="false" />
+    <Property Type="Int32" Name="student_id" Nullable="false" />
+    <Property Type="String" Name="StudentName" Nullable="false" MaxLength="181" />
+    <Property Type="Int32" Name="QuestionID" Nullable="false" />
+    <Property Type="String" Name="QuestionHeader" Nullable="true" />
+    <Property Type="DateTime" Name="ExamDate" Nullable="true" Precision="23" />
+    <Property Type="String" Name="StudentAnswer" Nullable="true" MaxLength="50" />
+  </ComplexType>
+  <ComplexType Name="select_Instructor_Course_Result">
+    <Property Type="Int32" Name="courseID" Nullable="false" />
+    <Property Type="String" Name="courseName" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="instructorID" Nullable="true" />
+    <Property Type="String" Name="InstructorName" Nullable="true" MaxLength="50" />
+  </ComplexType>
+  <ComplexType Name="select_Student_Course_Result">
+    <Property Type="Int32" Name="CourseID" Nullable="false" />
+    <Property Type="Int32" Name="StudentSSN" Nullable="false" />
+    <Property Type="Int32" Name="Grade" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="select_topic_Result">
+    <Property Type="Int32" Name="topic_id" Nullable="false" />
+    <Property Type="String" Name="topic_name" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="course_id" Nullable="true" />
+    <Property Type="String" Name="course_name" Nullable="true" MaxLength="50" />
+  </ComplexType>
+  <ComplexType Name="selectChoice_Result">
+    <Property Type="Int32" Name="id" Nullable="false" />
+    <Property Type="String" Name="title" Nullable="true" />
+    <Property Type="String" Name="choice" Nullable="false" MaxLength="180" />
+    <Property Type="String" Name="model_ans" Nullable="true" MaxLength="50" />
+  </ComplexType>
+  <ComplexType Name="selectQuestion_Result">
+    <Property Type="Int32" Name="id" Nullable="false" />
+    <Property Type="String" Name="title" Nullable="true" />
+    <Property Type="String" Name="type" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="model_ans" Nullable="true" MaxLength="50" />
+    <Property Type="Int32" Name="grade" Nullable="true" />
+    <Property Type="Int32" Name="crs_id" Nullable="true" />
+    <Property Type="String" Name="name" Nullable="true" MaxLength="50" />
+  </ComplexType>
+  <ComplexType Name="sp_helpdiagramdefinition_Result">
+    <Property Type="Int32" Name="version" Nullable="true" />
+    <Property Type="Binary" Name="definition" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_helpdiagrams_Result">
+    <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+    <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+    <Property Type="Int32" Name="ID" Nullable="false" />
+    <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+    <Property Type="Int32" Name="OwnerID" Nullable="false" />
+  </ComplexType>
+  <ComplexType Name="student_select_Result">
+    <Property Type="Int32" Name="Student_ssn" Nullable="false" />
+    <Property Type="String" Name="Full_name" Nullable="true" MaxLength="181" />
+    <Property Type="DateTime" Name="Birthday" Nullable="true" />
+    <Property Type="String" Name="address" Nullable="true" MaxLength="90" />
+    <Property Type="String" Name="email" Nullable="true" MaxLength="90" />
+    <Property Type="Int32" Name="Dept_id" Nullable="false" />
+    <Property Type="String" Name="Dept_name" Nullable="false" MaxLength="50" />
+  </ComplexType>
+  <ComplexType Name="view_depert_Result">
+    <Property Type="Int32" Name="Dept_id" Nullable="false" />
+    <Property Type="String" Name="Dept_name" Nullable="false" MaxLength="50" />
+  </ComplexType>
+</Schema>

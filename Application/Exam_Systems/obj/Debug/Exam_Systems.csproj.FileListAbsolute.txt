@@ -1,0 +1,17 @@
+E:\ITI\Advanced SQL\Project\our project\Exam_Systems\bin\Debug\Exam_Systems.exe.config
+E:\ITI\Advanced SQL\Project\our project\Exam_Systems\bin\Debug\Exam_Systems.exe
+E:\ITI\Advanced SQL\Project\our project\Exam_Systems\bin\Debug\Exam_Systems.pdb
+E:\ITI\Advanced SQL\Project\our project\Exam_Systems\bin\Debug\EntityFramework.dll
+E:\ITI\Advanced SQL\Project\our project\Exam_Systems\bin\Debug\EntityFramework.SqlServer.dll
+E:\ITI\Advanced SQL\Project\our project\Exam_Systems\bin\Debug\EntityFramework.xml
+E:\ITI\Advanced SQL\Project\our project\Exam_Systems\bin\Debug\EntityFramework.SqlServer.xml
+E:\ITI\Advanced SQL\Project\our project\Exam_Systems\obj\Debug\Exam_Systems.csproj.AssemblyReference.cache
+E:\ITI\Advanced SQL\Project\our project\Exam_Systems\obj\Debug\Exam_Systems.csproj.SuggestedBindingRedirects.cache
+E:\ITI\Advanced SQL\Project\our project\Exam_Systems\obj\Debug\Exam_Systems.Form1.resources
+E:\ITI\Advanced SQL\Project\our project\Exam_Systems\obj\Debug\Exam_Systems.Properties.Resources.resources
+E:\ITI\Advanced SQL\Project\our project\Exam_Systems\obj\Debug\Exam_Systems.csproj.GenerateResource.cache
+E:\ITI\Advanced SQL\Project\our project\Exam_Systems\obj\Debug\Exam_Systems.csproj.CoreCompileInputs.cache
+E:\ITI\Advanced SQL\Project\our project\Exam_Systems\obj\Debug\Exam_Systems.csproj.CopyComplete
+E:\ITI\Advanced SQL\Project\our project\Exam_Systems\obj\Debug\Exam_Systems.exe
+E:\ITI\Advanced SQL\Project\our project\Exam_Systems\obj\Debug\Exam_Systems.pdb
+E:\ITI\Advanced SQL\Project\our project\Exam_Systems\obj\Debug\Exam_Systems.Form2.resources
